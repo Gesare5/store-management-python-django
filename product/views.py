@@ -46,7 +46,9 @@ class BrandListView(APIView):
         serializer = BrandSerializer(brands, many=True)
         return Response(serializer.data)
 
-
+# TODO: REPLICATE THE DETAIL GET, PUT, DELETE FOR BRANDS
+    #  REPLICATE THE CREATE/POST METHOD
+     
 class ProductListView(APIView):
     """
     A simple view for viewing all products
