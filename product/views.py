@@ -45,10 +45,35 @@ class BrandListView(APIView):
         brands = Brand.objects.all()
         serializer = BrandSerializer(brands, many=True)
         return Response(serializer.data)
+    
+    def post(self, request, format=None):
+        pass
 
 # TODO: REPLICATE THE DETAIL GET, PUT, DELETE FOR BRANDS
-    #  REPLICATE THE CREATE/POST METHOD
-     
+#  REPLICATE THE CREATE/POST METHOD
+
+
+class BrandDetailView(APIView):
+    """
+    Update Brand details
+    Retrieve Brand, 
+    Change detail,
+    Save changes to db
+    """ 
+    def get_object(self, pk):
+        try:
+            return Brand.objects.get(pk=pk)
+        except Brand.DoesNotExist:
+            raise Http404
+
+    def get(self, pk, format=None):
+        pass
+    def put(self, request, pk, format=None):
+        pass
+    def delete(self, request, pk, format=None):
+        pass    
+
+
 class ProductListView(APIView):
     """
     A simple view for viewing all products
@@ -82,7 +107,7 @@ class ProductListView(APIView):
 class ProductDetailView(APIView):
     """
     Update Product details
-    Retrieve product, 
+    Retrieve Product, 
     Change detail,
     Save changes to db
     """    
