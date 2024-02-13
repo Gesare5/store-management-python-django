@@ -52,31 +52,31 @@ class ProductListView(APIView):
     A simple view for viewing all products
     """
 
-    # def get(self, request, format=None):
-    #     products = Product.objects.all()
-    #     serializer = ProductSerializer(products, many=True)
-    #     return Response(serializer.data)
-    
     def get(self, request, brand=None):
         queryset = Product.objects.all()
         name = request.query_params.get('name')
         if name is not None:
             queryset = queryset.filter(brand__name=name)
         serializer = ProductSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, *args, **kwargs):
+        """
+        Create the Product with given todo data
+        """
+        data = {
+            'name': request.data.get('name'),
+            'description': request.data.get('description'),
+            'price': request.data.get('price'),
+            'brand': request.data.get('brand')
+        }
+        serializer = ProductSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class ProductDetailView(APIView):
-#     """
-#     Retrieve Product Detail
-#     """
-
-#     def get(self, request, pk, format=None):
-#         product = Product.objects.get(pk=pk)
-#         serializer = ProductSerializer(product)
-#         return Response(serializer.data)
-
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
 class ProductDetailView(APIView):
     """
     Update Product details
@@ -89,22 +89,41 @@ class ProductDetailView(APIView):
             return Product.objects.get(pk=pk)
         except Product.DoesNotExist:
             raise Http404
-        
+
     def get(self, request, pk, format=None):
         product = self.get_object(pk)
         serializer = ProductSerializer(product)
         return Response(serializer.data, status=status.HTTP_200_OK)    
-        
+
     def put(self, request, pk, format=None):
         product = self.get_object(pk)
+        if not product:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = ProductSerializer(product, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, pk, format=None):
         product = self.get_object(pk)
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+# def get(self, request, format=None):
+#     products = Product.objects.all()
+#     serializer = ProductSerializer(products, many=True)
+#     return Response(serializer.data)
+
+# class ProductDetailView(APIView):
+#     """
+#     Retrieve Product Detail
+#     """
+
+#     def get(self, request, pk, format=None):
+#         product = Product.objects.get(pk=pk)
+#         serializer = ProductSerializer(product)
+#         return Response(serializer.data)
+
+#     return Response(serializer.data, status=status.HTTP_200_OK)
