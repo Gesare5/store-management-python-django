@@ -10,33 +10,8 @@ from .models import Product, Brand
 from .serializers import ProductSerializer, BrandSerializer
 
 
-# class BrandView(viewsets.ViewSet):
-#     """
-#     A simple Viewset for viewing all brands
-#     """
-
-#     queryset = Brand.objects.all()
-
-#     @extend_schema(responses=BrandSerializer)
-#     def list(self, request):
-#         serializer = BrandSerializer(self.queryset, many=True)
-#         return Response(serializer.data)
-
-
-# class ProductView(viewsets.ViewSet):
-#     """
-#     A simple Viewset for viewing all products
-#     """
-
-#     queryset = Product.objects.all()
-
-#     @extend_schema(responses=ProductSerializer)
-#     def list(self, request):
-#         serializer = ProductSerializer(self.queryset, many=True)
-#         return Response(serializer.data)
-
-
-# TODO: REPLICATE THE DETAIL GET, PUT, DELETE FOR BRANDS
+# TODO: REPLICATE
+# THE DETAIL GET, PUT, DELETE FOR BRANDS
 #  REPLICATE THE CREATE/POST METHOD
 
 
@@ -141,6 +116,32 @@ class ProductDetailView(APIView):
         product = self.get_object(pk)
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# class BrandView(viewsets.ViewSet):
+#     """
+#     A simple Viewset for viewing all brands
+#     """
+
+#     queryset = Brand.objects.all()
+
+#     @extend_schema(responses=BrandSerializer)
+#     def list(self, request):
+#         serializer = BrandSerializer(self.queryset, many=True)
+#         return Response(serializer.data)
+
+
+# class ProductView(viewsets.ViewSet):
+#     """
+#     A simple Viewset for viewing all products
+#     """
+
+#     queryset = Product.objects.all()
+
+#     @extend_schema(responses=ProductSerializer)
+#     def list(self, request):
+#         serializer = ProductSerializer(self.queryset, many=True)
+#         return Response(serializer.data)
 
 
 # def get(self, request, format=None):
