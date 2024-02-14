@@ -10,30 +10,34 @@ from .models import Product, Brand
 from .serializers import ProductSerializer, BrandSerializer
 
 
-class BrandView(viewsets.ViewSet):
-    """
-    A simple Viewset for viewing all brands
-    """
+# class BrandView(viewsets.ViewSet):
+#     """
+#     A simple Viewset for viewing all brands
+#     """
 
-    queryset = Brand.objects.all()
+#     queryset = Brand.objects.all()
 
-    @extend_schema(responses=BrandSerializer)
-    def list(self, request):
-        serializer = BrandSerializer(self.queryset, many=True)
-        return Response(serializer.data)
+#     @extend_schema(responses=BrandSerializer)
+#     def list(self, request):
+#         serializer = BrandSerializer(self.queryset, many=True)
+#         return Response(serializer.data)
 
 
-class ProductView(viewsets.ViewSet):
-    """
-    A simple Viewset for viewing all products
-    """
+# class ProductView(viewsets.ViewSet):
+#     """
+#     A simple Viewset for viewing all products
+#     """
 
-    queryset = Product.objects.all()
+#     queryset = Product.objects.all()
 
-    @extend_schema(responses=ProductSerializer)
-    def list(self, request):
-        serializer = ProductSerializer(self.queryset, many=True)
-        return Response(serializer.data)
+#     @extend_schema(responses=ProductSerializer)
+#     def list(self, request):
+#         serializer = ProductSerializer(self.queryset, many=True)
+#         return Response(serializer.data)
+
+
+# TODO: REPLICATE THE DETAIL GET, PUT, DELETE FOR BRANDS
+#  REPLICATE THE CREATE/POST METHOD
 
 
 class BrandListView(APIView):
@@ -45,21 +49,19 @@ class BrandListView(APIView):
         brands = Brand.objects.all()
         serializer = BrandSerializer(brands, many=True)
         return Response(serializer.data)
-    
+
     def post(self, request, format=None):
         pass
-
-# TODO: REPLICATE THE DETAIL GET, PUT, DELETE FOR BRANDS
-#  REPLICATE THE CREATE/POST METHOD
 
 
 class BrandDetailView(APIView):
     """
     Update Brand details
-    Retrieve Brand, 
+    Retrieve Brand,
     Change detail,
     Save changes to db
-    """ 
+    """
+
     def get_object(self, pk):
         try:
             return Brand.objects.get(pk=pk)
@@ -68,10 +70,12 @@ class BrandDetailView(APIView):
 
     def get(self, pk, format=None):
         pass
+
     def put(self, request, pk, format=None):
         pass
+
     def delete(self, request, pk, format=None):
-        pass    
+        pass
 
 
 class ProductListView(APIView):
@@ -81,21 +85,21 @@ class ProductListView(APIView):
 
     def get(self, request, brand=None):
         queryset = Product.objects.all()
-        name = request.query_params.get('name')
+        name = request.query_params.get("name")
         if name is not None:
             queryset = queryset.filter(brand__name=name)
         serializer = ProductSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     def post(self, request, *args, **kwargs):
         """
         Create the Product with given todo data
         """
         data = {
-            'name': request.data.get('name'),
-            'description': request.data.get('description'),
-            'price': request.data.get('price'),
-            'brand': request.data.get('brand')
+            "name": request.data.get("name"),
+            "description": request.data.get("description"),
+            "price": request.data.get("price"),
+            "brand": request.data.get("brand"),
         }
         serializer = ProductSerializer(data=data)
         if serializer.is_valid():
@@ -107,10 +111,11 @@ class ProductListView(APIView):
 class ProductDetailView(APIView):
     """
     Update Product details
-    Retrieve Product, 
+    Retrieve Product,
     Change detail,
     Save changes to db
-    """    
+    """
+
     def get_object(self, pk):
         try:
             return Product.objects.get(pk=pk)
@@ -120,7 +125,7 @@ class ProductDetailView(APIView):
     def get(self, request, pk, format=None):
         product = self.get_object(pk)
         serializer = ProductSerializer(product)
-        return Response(serializer.data, status=status.HTTP_200_OK)    
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk, format=None):
         product = self.get_object(pk)
