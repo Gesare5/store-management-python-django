@@ -26,7 +26,15 @@ class BrandListView(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        pass
+        """
+        Create the Product with given todo data
+        """
+        data = {"name": request.data.get("name")}
+        serializer = BrandSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class BrandDetailView(APIView):
@@ -44,7 +52,9 @@ class BrandDetailView(APIView):
             raise Http404
 
     def get(self, pk, format=None):
-        pass
+        brand = self.get_object(pk)
+        serializer = BrandSerializer(brand)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk, format=None):
         pass
