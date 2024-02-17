@@ -31,6 +31,7 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api/brands/", include("product.urlss")),
     path("api/products/", include("product.urls")),
+    path("api/stores/", include("store.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/schema/docs/", SpectacularSwaggerView.as_view(url_name="schema")),
 ]
