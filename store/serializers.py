@@ -4,7 +4,7 @@ from product.serializers import ProductSerializer
 from .models import Store
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class StoreSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
 
     class Meta:

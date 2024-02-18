@@ -27,7 +27,7 @@ class BrandListView(APIView):
 
     def post(self, request, format=None):
         """
-        Create the Product with given todo data
+        Create the Brand with given data
         """
         data = {"name": request.data.get("name")}
         serializer = BrandSerializer(data=data)
@@ -85,7 +85,7 @@ class ProductListView(APIView):
 
     def post(self, request, *args, **kwargs):
         """
-        Create the Product with given todo data
+        Create the Product with given data
         """
         data = {
             "name": request.data.get("name"),
