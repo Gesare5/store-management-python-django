@@ -51,7 +51,7 @@ class BrandDetailView(APIView):
         except Brand.DoesNotExist:
             raise Http404
 
-    def get(self, pk, format=None):
+    def get(self, request, pk, format=None):
         brand = self.get_object(pk)
         serializer = BrandSerializer(brand)
         return Response(serializer.data, status=status.HTTP_200_OK)
