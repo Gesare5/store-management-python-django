@@ -11,7 +11,7 @@ from .models import Store
 
 # TODO:
 # Rename the apps to be plural
-# write views for store
+# add create and update dates/timestamps
 class StoreListView(APIView):
     """
     A simple view for viewing all stores
@@ -41,8 +41,8 @@ class StoreListView(APIView):
 
 class StoreDetailView(APIView):
     """
-    Update Brand details
-    Retrieve Brand,
+    Update Store details
+    Retrieve Store,
     Change detail,
     Save changes to db
     """
@@ -70,17 +70,3 @@ class StoreDetailView(APIView):
         store = self.get_object(pk)
         store.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-#     def put(self, request, pk, format=None):
-#         brand = self.get_object(pk)
-#         serializer = BrandSerializer(brand, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#     def delete(self, request, pk, format=None):
-#         brand = self.get_object(pk)
-#         brand.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
