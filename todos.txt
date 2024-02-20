@@ -1,4 +1,4 @@
-Build out Store app
+Build out Store app - Done
 Build out User app
 Enable permissions and security
 Figure out search params
