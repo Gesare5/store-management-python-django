@@ -9,10 +9,6 @@ from .serializers import StoreSerializer
 from .models import Store
 
 
-# TODO:
-# Rename the apps to be plural
-# add create and update dates/timestamps
-# Figure out one-many/many-many r/ships
 class StoreListView(APIView):
     """
     A simple view for viewing all stores

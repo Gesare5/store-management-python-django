@@ -7,3 +7,4 @@ Implement JWT tokens
 Improve documentation
 Render html forms for put/post methods
 Figure out one-many/many-many r/ships
+Rename the apps to be plural
