@@ -9,6 +9,35 @@ from .serializers import StoreSerializer
 from .models import Store
 
 
+# https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/ figure out user app and permissions
+# Now that we've got some users to work with, we'd better add representations of those users to our API. Creating a new serializer is easy. In serializers.py add:
+
+# from django.contrib.auth.models import User
+
+# class UserSerializer(serializers.ModelSerializer):
+#     snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
+
+#     class Meta:
+#         model = User
+#         fields = ['id', 'username', 'snippets']
+
+# Because 'snippets' is a reverse relationship on the User model, it will not be included by default when using the ModelSerializer class, so we needed to add an explicit field for it.
+
+# We'll also add a couple of views to views.py. We'd like to just use read-only views for the user representations, so we'll use the ListAPIView and RetrieveAPIView generic class-based views.
+
+# from django.contrib.auth.models import User
+
+
+# class UserList(generics.ListAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+
+# class UserDetail(generics.RetrieveAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+
 class StoreListView(APIView):
     """
     A simple view for viewing all stores
