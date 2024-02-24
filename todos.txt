@@ -1,4 +1,5 @@
 Build out Store app - Done
+Add created_at to models - Done
 Build out User app
 Enable permissions and security
 Figure out search params
