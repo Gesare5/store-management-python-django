@@ -44,7 +44,13 @@ class StoreListView(APIView):
     """
 
     def get(self, request, format=None):
-        stores = Store.objects.all()
+        # try:
+        number = request.query_params["name"]
+        print(number)
+        # if number != None:
+        stores = Store.objects.get(name=number)
+        # except:
+        # stores = Store.objects.all()
         serializer = StoreSerializer(stores, many=True)
         return Response(serializer.data)
 
