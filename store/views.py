@@ -46,8 +46,10 @@ class StoreListView(APIView):
     def get(self, request, format=None):
         try:
             description = request.query_params["description"]
+            name = request.query_params["name"]
             if description != None:
-                stores = Store.objects.filter(description=description)
+                stores = Store.objects.filter(description=description, name=name)
+        # fix failing to retrieve on only providing 1 and figure out 'or' operation
         except:
             stores = Store.objects.all()
         serializer = StoreSerializer(stores, many=True)
