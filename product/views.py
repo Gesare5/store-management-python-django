@@ -77,7 +77,7 @@ class ProductListView(APIView):
     """
 
     filter_backends = [filters.SearchFilter]
-    search_fields = ["name"]
+    search_fields = ["name", "description"]
 
     def filter_queryset(self, queryset):
         """
