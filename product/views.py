@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404
 from rest_framework import viewsets, status
+from rest_framework import filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema
@@ -75,8 +76,24 @@ class ProductListView(APIView):
     A simple view for viewing all products
     """
 
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["name"]
+
+    def filter_queryset(self, queryset):
+        """
+        Given a queryset, filter it with whichever filter backend is in use.
+        You are unlikely to want to override this method, although you may need
+        to call it either from a list view, or from a custom `get_object`
+        method if you want to apply the configured filtering backend to the
+        default queryset.
+        """
+        for backend in list(self.filter_backends):
+            queryset = backend().filter_queryset(self.request, queryset, self)
+        return queryset
+
     def get(self, request, brand=None):
-        queryset = Product.objects.all()
+        unfiltered_queryset = Product.objects.all()
+        queryset = self.filter_queryset(unfiltered_queryset)
         name = request.query_params.get("name")
         if name is not None:
             queryset = queryset.filter(brand__name=name)
