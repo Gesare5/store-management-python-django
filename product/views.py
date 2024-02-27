@@ -96,7 +96,7 @@ class ProductListView(APIView):
         queryset = self.filter_queryset(unfiltered_queryset)
         name = request.query_params.get("name")
         if name is not None:
-            queryset = queryset.filter(brand__name=name)
+            queryset = queryset.filter(name=name)
         serializer = ProductSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

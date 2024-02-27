@@ -47,7 +47,7 @@ class StoreListView(APIView):
         try:
             description = request.query_params["description"]
             name = request.query_params["name"]
-            if description != None:
+            if description != None or name != None:
                 stores = Store.objects.filter(description=description, name=name)
         # fix failing to retrieve on only providing 1 and figure out 'or' operation
         except:
