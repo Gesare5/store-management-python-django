@@ -1,9 +1,10 @@
 Build out Store app - Done
 Add created_at to models - Done
+Figure out search params - Done
+Figure out filtering by other params - Done
+Chaining querys
 Build out User app
 Enable permissions and security
-Figure out search params
-Figure out other params
 Implement JWT tokens 
 Improve documentation
 Render html forms for put/post methods

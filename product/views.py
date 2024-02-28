@@ -95,6 +95,7 @@ class ProductListView(APIView):
         unfiltered_queryset = Product.objects.all()
         queryset = self.filter_queryset(unfiltered_queryset)
         name = request.query_params.get("name")
+        # description = request.query_params.get("description")
         if name is not None:
             queryset = queryset.filter(name=name)
         serializer = ProductSerializer(queryset, many=True)
