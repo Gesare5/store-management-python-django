@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # Internal Apps
     "product.apps.ProductConfig",
     "store.apps.StoreConfig",
+    "user.apps.UserConfig",
 ]
 
 MIDDLEWARE = [
