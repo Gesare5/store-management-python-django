@@ -16,9 +16,7 @@ class User(models.Model):
         return self.name
 
     # todo figure out how to set username as phone number
-    # create serializer class
     # figure out how to link django's user class/object
-    # perform migrations
     # setup custom urls
     # check out custom user creation
     # figure out how to return selected users store/products etc
