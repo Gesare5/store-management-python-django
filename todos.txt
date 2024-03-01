@@ -10,10 +10,10 @@ Improve documentation
 Render html forms for put/post methods
 Figure out one-many/many-many r/ships
 Rename the apps to be plural
-# todo figure out how to set username as phone number
-# create serializer class
+# todo figure out how to set username as phone number - Done
+# create serializer class - Done
+# perform migrations - Done
 # figure out how to link django's user class/object
-# perform migrations
 # setup custom urls
 # check out custom user creation
 # figure out how to return selected users store/products etc

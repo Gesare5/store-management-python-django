@@ -15,7 +15,6 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
-    # todo figure out how to set username as phone number
     # figure out how to link django's user class/object
     # setup custom urls
     # check out custom user creation
