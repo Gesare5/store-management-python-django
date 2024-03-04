@@ -19,3 +19,4 @@ Rename the apps to be plural
 # figure out how to return selected users store/products etc
 # products/brands are global
 # formatting of phone numbers and dates
+understanding django serializers
