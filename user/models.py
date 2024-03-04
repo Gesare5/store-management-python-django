@@ -29,18 +29,19 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=30, unique=True)
     email = models.CharField(max_length=250, unique=True)
-    first_name = models.CharField(max_length=30, Blank=True, null=True)
-    last_name = models.CharField(max_length=30, Blank=True, null=True)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
     phone = models.CharField(max_length=30, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
-    country = models.CharField(max_length=30, Blank=True, null=True)
-    city = models.CharField(max_length=30, Blank=True, null=True)
+    country = models.CharField(max_length=30, blank=True, null=True)
+    city = models.CharField(max_length=30, blank=True, null=True)
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', ]
