@@ -53,14 +53,15 @@ class StoreDetailView(APIView):
     Save changes to db
     """
 
-    def get_object(self, pk):
+    def get_object(self, pk, request):
         try:
-            return Store.objects.get(pk=pk)
+            user = request.user
+            return Store.objects.get(pk=pk, user=user)
         except Store.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
-        store = self.get_object(pk)
+        store = self.get_object(pk, request)
         serializer = StoreSerializer(store)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
