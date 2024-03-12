@@ -1,22 +1,22 @@
-Build out Store app - Done
-Add created_at to models - Done
-Figure out search params - Done
-Figure out filtering by other params - Done
+# Build out Store app - Done
+# Add created_at to models - Done
+# Figure out search params - Done
+# Figure out filtering by other params - Done
+# Build out User app - Done
+# todo figure out how to set username as phone number - Done
+# create serializer class - Done
+# perform migrations - Done
+# figure out how to link django's user class/object - Done
+# check out custom user creation - Done
+# figure out how to return selected users store/products etc - Done
 Chaining querys
-Build out User app
 Enable permissions and security
 Implement JWT tokens 
 Improve documentation
 Render html forms for put/post methods
 Figure out one-many/many-many r/ships
+setup custom urls
+products/brands are global
 Rename the apps to be plural
-# todo figure out how to set username as phone number - Done
-# create serializer class - Done
-# perform migrations - Done
-# figure out how to link django's user class/object
-# setup custom urls
-# check out custom user creation
-# figure out how to return selected users store/products etc
-# products/brands are global
-# formatting of phone numbers and dates
+formatting of phone numbers and dates
 understanding django serializers
