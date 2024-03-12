@@ -20,3 +20,6 @@ products/brands are global
 Rename the apps to be plural
 formatting of phone numbers and dates
 understanding django serializers
+How to prepopulate datastore with data at the start of a project
+Create a normal user and create products under them
+Check for filtering based on created user
