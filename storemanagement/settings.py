@@ -40,6 +40,11 @@ INSTALLED_APPS = [
     # External Packages
     "rest_framework",
     "drf_spectacular",
+    "rest_auth",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "rest_auth.registration",
     # Internal Apps
     "product.apps.ProductConfig",
     "store.apps.StoreConfig",
