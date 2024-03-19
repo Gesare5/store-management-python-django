@@ -52,6 +52,16 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = "user.User"
+ACCOUNT_EMAIL_VERIFICATION = None
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER": "user.serializers.CustomUserDetailsSerializer",
+}
+REST_AUTH_REGISTER_SERIALIZERS = {
+    "REGISTER_SERIALIZER": "user.serializers.CustomRegisterSerializer",
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

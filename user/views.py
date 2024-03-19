@@ -19,7 +19,7 @@ class UserAPIView(APIView):
         return Response(serializer.data)
 
 
-class GenericUserAPIVIew(
+class GenericUserAPIView(
     generics.GenericAPIView,
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
