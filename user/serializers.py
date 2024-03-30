@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from rest_auth.registration.serializers import RegisterSerializer
+
+# from rest_auth.registration.serializers import RegisterSerializer
 from .models import User
 
 
@@ -25,7 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
 
-class CustomRegisterSerializer(RegisterSerializer):
+class CustomRegisterSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(write_only=True)
     first_name = serializers.CharField()
