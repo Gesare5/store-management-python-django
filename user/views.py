@@ -4,11 +4,12 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework.response import Response
-from rest_auth.registration.views import RegisterView
+
+# from rest_auth.registration.views import RegisterView
 
 
-class CustomRegisterView(RegisterView):
-    queryset = User.objects.all()
+# class CustomRegisterView(RegisterView):
+# queryset = User.objects.all()
 
 
 class UserAPIView(APIView):
