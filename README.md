@@ -10,7 +10,7 @@ Through it, a user can add and manage their stores and products.
 ## Installation
 1. Clone the repository:
 ```bash
- git clone https://github.com/yourusername/yourproject.git
+ git clone https://github.com/Gesare5/store-management-python-django.git
 ```
 
 2. Create and activate a virtual env. 
