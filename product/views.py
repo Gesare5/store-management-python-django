@@ -10,7 +10,7 @@ from rest_framework.decorators import permission_classes
 
 # Create your views here.
 from .models import Product, Brand
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly,IsOwner
 from .serializers import ProductSerializer, BrandSerializer
 
 
@@ -23,11 +23,11 @@ class BrandListView(APIView):
     """
     A simple view for viewing all brands
     """
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, format=None):
-        brands = Brand.objects.filter(user=request.user)
-        # brands = Brand.objects.all()
+        # brands = Brand.objects.filter(user=request.user)
+        brands = Brand.objects.all()
         serializer = BrandSerializer(brands, many=True)
         return Response(serializer.data)
 
@@ -85,23 +85,24 @@ class ProductListView(APIView):
 
     filter_backends = [filters.SearchFilter]
     search_fields = ["name", "description"]
+    permission_classes= [permissions.IsAdminUser]
 
-    def filter_queryset(self, queryset):
-        """
-        Given a queryset, filter it with whichever filter backend is in use.
-        You are unlikely to want to override this method, although you may need
-        to call it either from a list view, or from a custom `get_object`
-        method if you want to apply the configured filtering backend to the
-        default queryset.
-        """
-        for backend in list(self.filter_backends):
-            queryset = backend().filter_queryset(self.request, queryset, self)
-        return queryset
+    # def filter_queryset(self, queryset):
+    #     """
+    #     Given a queryset, filter it with whichever filter backend is in use.
+    #     You are unlikely to want to override this method, although you may need
+    #     to call it either from a list view, or from a custom `get_object`
+    #     method if you want to apply the configured filtering backend to the
+    #     default queryset.
+    #     """
+    #     for backend in list(self.filter_backends):
+    #         queryset = backend().filter_queryset(self.request, queryset, self)
+    #     return queryset
 
     def get(self, request, brand=None):
-        unfiltered_queryset = Product.objects.all()
-        queryset = self.filter_queryset(unfiltered_queryset)
+        queryset = Product.objects.filter(user=request.user)
         name = request.query_params.get("name")
+        # queryset = self.filter_queryset(unfiltered_queryset)
         # description = request.query_params.get("description")
         if name is not None:
             queryset = queryset.filter(name=name)
@@ -132,20 +133,22 @@ class ProductDetailView(APIView):
     Change detail,
     Save changes to db
     """
+    # permission_classes= [permissions.IsAuthenticated]
 
-    def get_object(self, pk):
+
+    def get_object(self, pk, request):
         try:
-            return Product.objects.get(pk=pk)
+            return Product.objects.get(pk=pk, user=request.user)
         except Product.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
-        product = self.get_object(pk)
+        product = self.get_object(pk, request)
         serializer = ProductSerializer(product)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk, format=None):
-        product = self.get_object(pk)
+        product = self.get_object(pk, request)
         if not product:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = ProductSerializer(product, data=request.data)
@@ -155,7 +158,7 @@ class ProductDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        product = self.get_object(pk)
+        product = self.get_object(pk, request)
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
