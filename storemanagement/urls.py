@@ -29,7 +29,7 @@ router = DefaultRouter()
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
-    path("api/brands/", include("product.urlss")),
+    # path("api/", include("product.urlss")),
     path("api/products/", include("product.urls")),
     path("api/stores/", include("store.urls")),
     # path("api/users", include("user.urls")),
