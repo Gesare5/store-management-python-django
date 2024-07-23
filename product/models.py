@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
+from django.contrib.auth.models import User
 
 # id,name,storeid, price, brand, type
 class Category(models.Model):
@@ -26,6 +26,8 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=4, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    category = models.OneToOneField(Category, null=True, on_delete=models.SET_NULL)
+
 
     def __str__(self):
         return self.name
