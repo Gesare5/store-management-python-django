@@ -5,28 +5,78 @@ from rest_framework import filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema
-from rest_framework import permissions
-from rest_framework.decorators import permission_classes
 
 # Create your views here.
-from .models import Product, Brand
-from .permissions import IsOwnerOrReadOnly,IsOwner
-from .serializers import ProductSerializer, BrandSerializer
+from .models import Product, Brand, Category
+from .serializers import ProductSerializer, BrandSerializer, CategorySerializer
 
 
-# TODO: REPLICATE
-# THE DETAIL GET, PUT, DELETE FOR BRANDS
-#  REPLICATE THE CREATE/POST METHOD
+
+# rewrite this as a generic view, to check if permissions work
+class CategoryListView(APIView):
+    """
+    A simple view for viewing all brands
+    """
+
+    def get(self, request, format=None):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        """
+        Create the Brand with given data
+        """
+        data = {"name": request.data.get("name")}
+        serializer = CategorySerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CategoryDetailView(APIView):
+    """
+    Update Brand details
+    Retrieve Brand,
+    Change detail,
+    Save changes to db
+    """
+
+    def get_object(self, pk):
+        try:
+            return Category.objects.get(pk=pk)
+        except Category.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        category = self.get_object(pk)
+        serializer = CategorySerializer(category)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk, format=None):
+        category = self.get_object(pk)
+        serializer = CategorySerializer(category, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        category = self.get_object(pk)
+        category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
 
 
 class BrandListView(APIView):
     """
     A simple view for viewing all brands
     """
-    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, format=None):
-        # brands = Brand.objects.filter(user=request.user)
         brands = Brand.objects.all()
         serializer = BrandSerializer(brands, many=True)
         return Response(serializer.data)
@@ -51,21 +101,19 @@ class BrandDetailView(APIView):
     Save changes to db
     """
 
-    permission_classes = [IsOwnerOrReadOnly]
-
-    def get_object(self, pk, request):
+    def get_object(self, pk):
         try:
             return Brand.objects.get(pk=pk)
         except Brand.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
-        brand = self.get_object(pk, request)
+        brand = self.get_object(pk)
         serializer = BrandSerializer(brand)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk, format=None):
-        brand = self.get_object(pk, request)
+        brand = self.get_object(pk)
         serializer = BrandSerializer(brand, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -73,9 +121,12 @@ class BrandDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        brand = self.get_object(pk, request)
+        brand = self.get_object(pk)
         brand.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
 
 
 class ProductListView(APIView):
@@ -85,24 +136,23 @@ class ProductListView(APIView):
 
     filter_backends = [filters.SearchFilter]
     search_fields = ["name", "description"]
-    permission_classes= [permissions.IsAdminUser]
 
-    # def filter_queryset(self, queryset):
-    #     """
-    #     Given a queryset, filter it with whichever filter backend is in use.
-    #     You are unlikely to want to override this method, although you may need
-    #     to call it either from a list view, or from a custom `get_object`
-    #     method if you want to apply the configured filtering backend to the
-    #     default queryset.
-    #     """
-    #     for backend in list(self.filter_backends):
-    #         queryset = backend().filter_queryset(self.request, queryset, self)
-    #     return queryset
+    def filter_queryset(self, queryset):
+        """
+        Given a queryset, filter it with whichever filter backend is in use.
+        You are unlikely to want to override this method, although you may need
+        to call it either from a list view, or from a custom `get_object`
+        method if you want to apply the configured filtering backend to the
+        default queryset.
+        """
+        for backend in list(self.filter_backends):
+            queryset = backend().filter_queryset(self.request, queryset, self)
+        return queryset
 
     def get(self, request, brand=None):
-        queryset = Product.objects.filter(user=request.user)
+        unfiltered_queryset = Product.objects.all()
+        queryset = self.filter_queryset(unfiltered_queryset)
         name = request.query_params.get("name")
-        # queryset = self.filter_queryset(unfiltered_queryset)
         # description = request.query_params.get("description")
         if name is not None:
             queryset = queryset.filter(name=name)
@@ -133,22 +183,20 @@ class ProductDetailView(APIView):
     Change detail,
     Save changes to db
     """
-    # permission_classes= [permissions.IsAuthenticated]
 
-
-    def get_object(self, pk, request):
+    def get_object(self, pk):
         try:
-            return Product.objects.get(pk=pk, user=request.user)
+            return Product.objects.get(pk=pk)
         except Product.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
-        product = self.get_object(pk, request)
+        product = self.get_object(pk)
         serializer = ProductSerializer(product)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk, format=None):
-        product = self.get_object(pk, request)
+        product = self.get_object(pk)
         if not product:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = ProductSerializer(product, data=request.data)
@@ -158,7 +206,7 @@ class ProductDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        product = self.get_object(pk, request)
+        product = self.get_object(pk)
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
